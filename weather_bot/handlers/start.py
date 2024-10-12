@@ -1,4 +1,4 @@
-from aiogram import Router, F
+from aiogram import Router
 from aiogram.filters import CommandStart, Command
 from aiogram.types import Message
 from dotenv import load_dotenv 
@@ -6,19 +6,18 @@ from dotenv import load_dotenv
 import os
 import requests
 
-
 start_router = Router()
 
 @start_router.message(CommandStart())
 async def cmd_start(message: Message):
-    await message.answer("Привет! Используй команду /weather город, чтобы узнать погоду.")
+    await message.answer("Привет! Укажи название города после команды /weather, чтобы узнать погоду.")
 
 @start_router.message(Command('weather'))
 async def get_weather(message: Message):
     city = message.text.split(maxsplit=1)[1] if len(message.text.split()) > 1 else None
     
     if city is None:
-        await message.answer("Пожалуйста, укажите название города после команды /weather.")
+        await message.answer("Пожалуйста, укажи название интересующего тебя города после команды /weather.")
         return
 
     load_dotenv()
@@ -42,5 +41,3 @@ async def get_weather(message: Message):
                              f"Скорость ветра: {wind_speed} м/с")
     else:
         await message.answer("Город не найден. Попробуйте еще раз.")
-
-
